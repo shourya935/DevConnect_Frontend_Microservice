@@ -1,11 +1,26 @@
 import React from "react";
 import DevConnectLogo from "../assets/DevConnectLogo.png";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../ustils/constants";
+import { removeUser } from "../ustils/userSlice";
 
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try{
+      await axios.post(BASE_URL + "/logout",{}, {withCredentials:true})
+      dispatch(removeUser())
+      navigate("/login")
+    }catch(err){
+      console.error(err)
+    }
+  }
 
   return (
     <div className="navbar bg-base-100 shadow-sm px-4">
@@ -17,7 +32,6 @@ const NavBar = () => {
             alt="DevConnect Logo"
             className="h-15 w-15 object-contain"
           />
-          DevConnect
         </Link>
       </div>
 
@@ -49,7 +63,7 @@ const NavBar = () => {
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                <Link onClick={handleLogout}>Logout</Link>
               </li>
             </ul>
           </div>
