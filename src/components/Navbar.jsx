@@ -1,6 +1,8 @@
 import React from "react";
 import DevConnectLogo from "../assets/DevConnectLogo.png";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
@@ -9,14 +11,14 @@ const NavBar = () => {
     <div className="navbar bg-base-100 shadow-sm px-4">
       {/* Left side: Logo */}
       <div className="flex-1">
-        <a className="flex items-center gap-2 text-xl font-semibold text-primary">
+        <Link to="/" className="flex items-center gap-2 text-xl font-semibold text-primary">
           <img
             src={DevConnectLogo}
             alt="DevConnect Logo"
-            className="h-10 w-10 object-contain"
+            className="h-15 w-15 object-contain"
           />
           DevConnect
-        </a>
+        </Link>
       </div>
 
       {/* Right side: User Profile */}
@@ -41,7 +43,7 @@ const NavBar = () => {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a>Profile</a>
+                <Link to="/profile">Profile</Link>
               </li>
               <li>
                 <a>Settings</a>
