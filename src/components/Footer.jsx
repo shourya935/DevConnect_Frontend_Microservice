@@ -9,13 +9,6 @@ const Footer = () => {
         <p className="text-center md:text-left mb-2 md:mb-0">
           &copy; {new Date().getFullYear()} DevConnect. All rights reserved.
         </p>
-
-        {/* Right: Links */}
-        <div className="flex space-x-4">
-          <a href="#" className="hover:text-blue-500">Privacy</a>
-          <a href="#" className="hover:text-blue-500">Terms</a>
-          <a href="#" className="hover:text-blue-500">Contact</a>
-        </div>
       </div>
     </footer>
   );
