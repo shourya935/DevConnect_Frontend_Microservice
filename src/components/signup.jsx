@@ -13,12 +13,14 @@ const SignUpForm = () => {
     lastName: "",
     age: "",
     about: "",
-    skills: "",
+    skills: [],
     emailID: "",
     password: "",
     image: null,
     gender: "Not Specified",
   });
+  const [skillsInput, setSkillsInput] = useState("");
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -51,7 +53,7 @@ const SignUpForm = () => {
     // submitData.append("lastName", formData.lastName);
     submitData.append("age", formData.age);
     submitData.append("about", formData.about);
-    submitData.append("skills", formData.skills);
+    submitData.append("skills", JSON.stringify(formData.skills));
     submitData.append("emailID", formData.emailID);
     submitData.append("password", formData.password);
     submitData.append("image", formData.image);
@@ -72,6 +74,27 @@ const SignUpForm = () => {
   };
 
   const closeError = () => setError(null);
+
+  const handleSkillKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const trimmed = skillsInput.trim();
+      if (trimmed && !formData.skills.includes(trimmed)) {
+        setFormData((prev) => ({
+          ...prev,
+          skills: [...prev.skills, trimmed],
+        }));
+      }
+      setSkillsInput(""); // clear input
+    }
+  };
+
+  const removeSkill = (indexToRemove) => {
+    setFormData((prev) => ({
+      ...prev,
+      skills: prev.skills.filter((_, index) => index !== indexToRemove),
+    }));
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -119,23 +142,47 @@ const SignUpForm = () => {
             required
           />
 
-          <input
-            type="text"
+          <textarea
             name="about"
-            placeholder="Short description (e.g., Web Developer)"
+            placeholder="Short description (e.g., Software Developer passionate about solving real-world problems...)"
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+            rows="2"
             required
-          />
+          ></textarea>
 
-          <input
-            type="text"
-            name="skills"
-            placeholder="Skills (e.g., React, Node.js)"
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
-          />
+          {/* Tag Input for Skills */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">
+              Skills
+            </label>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {formData.skills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm flex items-center gap-1"
+                >
+                  {skill}
+                  <button
+                    type="button"
+                    onClick={() => removeSkill(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    &times;
+                  </button>
+                </span>
+              ))}
+            </div>
+
+            <input
+              type="text"
+              value={skillsInput}
+              onChange={(e) => setSkillsInput(e.target.value)}
+              onKeyDown={handleSkillKeyDown}
+              placeholder="Type skill and press Enter (e.g., Data Analytics, AI/ML)"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
 
           <label className="block">
             <span className="text-sm font-medium text-gray-700 mb-1">
@@ -188,7 +235,7 @@ const SignUpForm = () => {
                 Signup Error!!
               </h3>
               <p className="text-gray-800">{error}</p>
-              
+
               <button
                 onClick={closeError}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"

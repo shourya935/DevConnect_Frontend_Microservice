@@ -18,7 +18,8 @@ const Feed = () => {
       });
       dispatch(addFeed(res.data));
     } catch (err) {
-      //ToDo Handel error
+      console.error(err);
+      
     }
   };
 
@@ -29,7 +30,7 @@ const Feed = () => {
   return (
     feed && (
       <div className="flex justify-center ">
-        <UserCard user={feed[0]} />
+        <UserCard user={feed.request[22]} />
       </div>
     )
   );
