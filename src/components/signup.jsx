@@ -53,7 +53,7 @@ const SignUpForm = () => {
     // submitData.append("lastName", formData.lastName);
     submitData.append("age", formData.age);
     submitData.append("about", formData.about);
-    submitData.append("skills", JSON.stringify(formData.skills));
+    formData.skills.forEach(skill => submitData.append("skills", skill));
     submitData.append("emailID", formData.emailID);
     submitData.append("password", formData.password);
     submitData.append("image", formData.image);
@@ -63,6 +63,7 @@ const SignUpForm = () => {
       const res = await axios.post(BASE_URL + "/signup", submitData, {
         withCredentials: true,
       });
+    
       dispatch(addUser(res.data?.user));
       navigate("/");
     } catch (err) {

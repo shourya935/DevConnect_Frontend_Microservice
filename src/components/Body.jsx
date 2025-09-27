@@ -1,17 +1,18 @@
 import React, { useEffect } from "react";
 import { BASE_URL } from "../ustils/constants";
 import axios from "axios";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import NavBar from "./Navbar";
 import Footer from "./Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../ustils/userSlice";
-import { useLocation } from "react-router-dom";
 
 function Body() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); 
   const userData = useSelector((store) => store.user);
+
   const fetchUser = async () => {
     try {
       const res = await axios.get(BASE_URL + "/profile/veiw", {
@@ -19,7 +20,7 @@ function Body() {
       });
       dispatch(addUser(res.data));
     } catch (err) {
-      if (err.status == 401) {
+      if (err?.response?.status === 401) {
         navigate("/login");
       }
       console.error(err);
@@ -36,11 +37,15 @@ function Body() {
   const shouldHideNav = hideNavRoutes.includes(location.pathname);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       {!shouldHideNav && <NavBar />}
-      <Outlet />
+
+      <main className="flex-grow">
+        <Outlet />
+      </main>
+
       {!shouldHideNav && <Footer />}
-    </>
+    </div>
   );
 }
 

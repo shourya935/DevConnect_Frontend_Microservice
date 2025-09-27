@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import EditProfile from "./EditProfile";
 import EditPassword from "./EditPassword";
 import { useSelector } from "react-redux";
+import { UserCardWithoutButtons } from "./UserCard";
 
 function Profile() {
   const user = useSelector((store) => store.user);
@@ -34,46 +35,10 @@ function Profile() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-4 py-8 bg-gray-50">
       <div className="card w-full max-w-md bg-white shadow-md rounded-lg overflow-hidden">
-        <figure className="h-64 w-full overflow-hidden">
-          <img
-            src={photoURL || "https://via.placeholder.com/150"}
-            alt="User Profile"
-            className="w-full h-full object-cover"
-          />
-        </figure>
+      
+      <UserCardWithoutButtons user={user}/>
 
-        {/* User Info */}
-        <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            {firstName}{" "}
-            {age && <span className="text-gray-500 text-lg">({age})</span>}
-          </h2>
-
-          {/* About section with See more */}
-          <p className="text-gray-700 mb-2">
-            {displayedAbout}
-            {isLongAbout && (
-              <span
-                onClick={toggleAbout}
-                className="text-blue-500 ml-1 cursor-pointer font-medium"
-              >
-                {showFullAbout ? " See less" : "...See more"}
-              </span>
-            )}
-          </p>
-
-          {/* Skills as Pills */}
-          <div className="flex flex-wrap gap-2 mt-3 mb-4">
-            {skills.map((skill, idx) => (
-              <span
-                key={idx}
-                className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm font-medium"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-
+          <div className="p-6">
           {/* Buttons */}
           <div className="flex justify-center gap-4 mt-4 flex-wrap">
             <button
