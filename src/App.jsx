@@ -6,6 +6,7 @@ import Body from "./components/Body";
 import Profile from "./components/Profile";
 import Feed from "./components/Feed";
 import SignUpForm from "./components/signup";
+import Connections from "./components/Connections";
 
 
 
@@ -18,7 +19,8 @@ function App() {
         <Route path="/" element={<Feed/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/profile" element={<Profile/>}/>
-        <Route path="/signup" element={<SignUpForm/>}/>     
+        <Route path="/signup" element={<SignUpForm/>}/>
+        <Route path="/connections" element={<Connections/>}/>
       </Route>
     </Routes>
     </BrowserRouter>
