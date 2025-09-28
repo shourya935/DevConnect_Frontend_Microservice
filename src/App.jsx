@@ -5,8 +5,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Body from "./components/Body";
 import Profile from "./components/Profile";
 import Feed from "./components/Feed";
-import SignUpForm from "./components/signup";
+import SignUpForm from "./components/Signup";
 import Connections from "./components/Connections";
+import Requstes from "./components/Requests";
 
 
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/signup" element={<SignUpForm/>}/>
         <Route path="/connections" element={<Connections/>}/>
+        <Route path="/requests" element={<Requstes/>}/>
       </Route>
     </Routes>
     </BrowserRouter>

@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../ustils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../ustils/connectionsSlice";
-import {  UserCardWithoutButtons } from "./UserCard";
+import UserCard from "./UserCard";
 
 function Connections() {
   const dispatch = useDispatch();
-  const connections = useSelector((store) => store.Connections);
+  const connections = useSelector((store) => store.connections);
   const [selectedUser, setSelectedUser] = useState(null); // for modal
   const [showModal, setShowModal] = useState(false);
 
@@ -82,7 +82,7 @@ function Connections() {
         >
           &times;
         </button>
-        <UserCardWithoutButtons user = {selectedUser} />
+        <UserCard user = {selectedUser} />
         </div>
         </div>
       )}

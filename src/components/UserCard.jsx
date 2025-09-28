@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 
 function UserCard({ user }) {
-  if (!user) {
-    return <div>No users found</div>; // Or some fallback UI
-  }
+
   const { firstName, age, about, skills = [], photoURL } = user;
 
   const [showFullAbout, setShowFullAbout] = useState(false);
@@ -59,15 +57,6 @@ function UserCard({ user }) {
         </div>
       </div>
 
-      {/* Action buttons */}
-      <div className="flex justify-center gap-4 p-4 bg-gray-100">
-        <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">
-          Skip
-        </button>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-          Send Request
-        </button>
-      </div>
     </div>
   );
 }

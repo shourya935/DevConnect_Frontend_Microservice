@@ -36,9 +36,9 @@ function EditProfile({ user }) {
       submitData.append("firstName", formData.firstName);
       submitData.append("age", formData.age);
       submitData.append("about", formData.about);
-      formData.skills.forEach(skill => submitData.append("skills", skill));
+      formData.skills.forEach((skill) => submitData.append("skills", skill));
       if (formData.image) submitData.append("image", formData.image);
-      
+
       const res = await axios.patch(BASE_URL + "/profile/edit", submitData, {
         withCredentials: true,
       });
@@ -76,7 +76,11 @@ function EditProfile({ user }) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6 max-w-md mx-auto">
       <h3 className="text-xl font-semibold mb-4">Edit Profile</h3>
-      <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4"
+        encType="multipart/form-data"
+      >
         {/* Name */}
         <input
           type="text"
@@ -128,14 +132,32 @@ function EditProfile({ user }) {
               </span>
             ))}
           </div>
-          <input
-            type="text"
-            value={skillsInput}
-            onChange={(e) => setSkillsInput(e.target.value)}
-            onKeyDown={handleSkillKeyDown}
-            placeholder="Type skill and press Enter"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={skillsInput}
+              onChange={(e) => setSkillsInput(e.target.value)}
+              onKeyDown={handleSkillKeyDown}
+              placeholder="Type skill and press Add (e.g., Data Analytics)"
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                const trimmed = skillsInput.trim();
+                if (trimmed && !formData.skills.includes(trimmed)) {
+                  setFormData((prev) => ({
+                    ...prev,
+                    skills: [...prev.skills, trimmed],
+                  }));
+                  setSkillsInput("");
+                }
+              }}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            >
+              Add
+            </button>
+          </div>
         </div>
 
         {/* Profile Image */}
@@ -143,7 +165,13 @@ function EditProfile({ user }) {
           <span className="text-sm text-gray-700 mb-1">Profile Picture</span>
           <label className="w-full mt-1 bg-blue-50 text-blue-600 border border-dashed border-blue-400 px-4 py-2 rounded-md text-center cursor-pointer hover:bg-blue-100">
             Upload Photo
-            <input type="file" name="image" accept="image/*" hidden onChange={handleChange} />
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              hidden
+              onChange={handleChange}
+            />
           </label>
         </label>
 

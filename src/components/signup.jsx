@@ -53,7 +53,7 @@ const SignUpForm = () => {
     // submitData.append("lastName", formData.lastName);
     submitData.append("age", formData.age);
     submitData.append("about", formData.about);
-    formData.skills.forEach(skill => submitData.append("skills", skill));
+    formData.skills.forEach((skill) => submitData.append("skills", skill));
     submitData.append("emailID", formData.emailID);
     submitData.append("password", formData.password);
     submitData.append("image", formData.image);
@@ -63,7 +63,7 @@ const SignUpForm = () => {
       const res = await axios.post(BASE_URL + "/signup", submitData, {
         withCredentials: true,
       });
-    
+
       dispatch(addUser(res.data?.user));
       navigate("/");
     } catch (err) {
@@ -175,14 +175,32 @@ const SignUpForm = () => {
               ))}
             </div>
 
-            <input
-              type="text"
-              value={skillsInput}
-              onChange={(e) => setSkillsInput(e.target.value)}
-              onKeyDown={handleSkillKeyDown}
-              placeholder="Type skill and press Enter (e.g., Data Analytics, AI/ML)"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={skillsInput}
+                onChange={(e) => setSkillsInput(e.target.value)}
+                onKeyDown={handleSkillKeyDown}
+                placeholder="Type skill and press Add(e.g., Data Analytics)"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const trimmed = skillsInput.trim();
+                  if (trimmed && !formData.skills.includes(trimmed)) {
+                    setFormData((prev) => ({
+                      ...prev,
+                      skills: [...prev.skills, trimmed],
+                    }));
+                    setSkillsInput("");
+                  }
+                }}
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              >
+                Add
+              </button>
+            </div>
           </div>
 
           <label className="block">
