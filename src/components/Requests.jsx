@@ -2,13 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../ustils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../ustils/requestsSlice";
+import { addRequests, removeRequests } from "../ustils/requestsSlice";
 import UserCard from "./UserCard";
 
 function Requests() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState("Pending");
+ 
 
   const dispatch = useDispatch();
   const requests = useSelector((store) => store.requests);
@@ -35,8 +35,10 @@ function Requests() {
         {},
         { withCredentials: true }
       );
-      setStatus(status);
+  
       setShowModal(null);
+
+      dispatch(removeRequests(requestId))
     } catch (err) {
       console.error("Error in sending ReviewRequest", err);
     }
@@ -75,7 +77,7 @@ function Requests() {
   return (
     <div className="p-4">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">
-        👋 Incoming Requests
+        🔗 Incoming Requests
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -102,27 +104,21 @@ function Requests() {
             </div>
 
             <span
-              className={`absolute top-2 right-2 text-xs px-2 py-1 rounded-full ${
-                status === "accepted"
-                  ? "bg-green-100 text-green-800"
-                  : status === "rejected"
-                  ? "bg-red-100 text-red-800"
-                  : "bg-yellow-100 text-yellow-800"
-              }`}
+              className="absolute top-2 bg-amber-200  right-2 text-xs px-2 py-1 rounded-full"
             >
-              {status}
+              pending
             </span>
-            {status === "Pending" && (
+            
               <button className="mt-4 w-full py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition">
                 View Profile
               </button>
-            )}
+            
           </div>
         ))}
       </div>
 
       {/* Modal */}
-      {showModal && selectedUser && status == "Pending" && (
+      {showModal && selectedUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4">
           <div className="bg-white w-full max-w-md rounded-xl shadow-lg overflow-hidden relative">
             <button
@@ -137,20 +133,20 @@ function Requests() {
 
               <div className="mt-4 flex justify-between gap-4">
                 <button
-                  className="flex-1 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+                  className="flex-1 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
                   onClick={() =>
                     sendReviewRequest("accepted", selectedUser._id)
                   }
                 >
-                  ✅ Accept
+                  Accept
                 </button>
                 <button
-                  className="flex-1 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                  className="flex-1 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition"
                   onClick={() =>
                     sendReviewRequest("rejected", selectedUser._id)
                   }
                 >
-                  ❌ Reject
+                  Reject
                 </button>
               </div>
             </div>

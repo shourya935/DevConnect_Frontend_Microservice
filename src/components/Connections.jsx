@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../ustils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addConnections } from "../ustils/connectionsSlice";
+import { addConnections, removeConnections } from "../ustils/connectionsSlice";
 import UserCard from "./UserCard";
 
 function Connections() {
@@ -26,6 +26,14 @@ function Connections() {
     loadConnections();
   }, []);
 
+  const removeConnection = async (userId) => {
+    await axios.delete(`${BASE_URL}/user/deleteconnection/${userId}`, {
+      withCredentials: true,
+    });
+    dispatch(removeConnections(userId));
+    setShowModal(false);
+  };
+
   const openModal = (user) => {
     setSelectedUser(user);
     setShowModal(true);
@@ -45,14 +53,18 @@ function Connections() {
           className="w-24 mb-4 opacity-50"
         />
         <p className="text-lg font-semibold mb-1">No connections yet</p>
-        <p className="text-sm">Explore the feed page and connect with like-minded people.</p>
+        <p className="text-sm">
+          Explore the feed page and connect with like-minded people.
+        </p>
       </div>
     );
   }
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Connections</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        Your Connections
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {connections.map((ele) => (
           <div
@@ -66,7 +78,9 @@ function Connections() {
               className="w-12 h-12 rounded-full object-cover ring-2 ring-blue-500 mr-4"
             />
             <div>
-              <p className="text-lg font-medium text-gray-900">{ele?.firstName}</p>
+              <p className="text-lg font-medium text-gray-900">
+                {ele?.firstName}
+              </p>
             </div>
           </div>
         ))}
@@ -74,16 +88,32 @@ function Connections() {
 
       {/* Modal */}
       {showModal && selectedUser && (
-         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-      <div className="bg-white w-[90%] max-w-md rounded-lg shadow-lg p-6 relative">
-        <button
-          onClick={closeModal}
-          className="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-xl font-bold"
-        >
-          &times;
-        </button>
-        <UserCard user = {selectedUser} />
-        </div>
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+          <div className="bg-white w-[90%] max-w-md rounded-lg shadow-lg p-6 relative">
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-2xl font-bold"
+            >
+              &times;
+            </button>
+
+            {/* User card */}
+            <UserCard user={selectedUser} />
+
+            {/* Text and button */}
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <span className="text-gray-700 text-center text-lg">
+                {`Remove ${selectedUser.firstName} from your connections`}
+              </span>
+              <button
+                onClick={() => removeConnection(selectedUser._id)}
+                className="w-full px-6 py-3 bg-red-500 text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-red-600 active:scale-95 transition-transform duration-150"
+              >
+                Remove ⊘
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

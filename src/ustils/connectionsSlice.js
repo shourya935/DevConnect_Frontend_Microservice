@@ -7,7 +7,10 @@ const connectionsSlice = createSlice({
     initialState,
     reducers: {
         addConnections: (state, action) => action.payload,
-        removeConnections: (state, action) => null,
+        removeConnections: (state, action) => {
+            const newConnectionsList = state.filter((selectedUser) => selectedUser._id !== action.payload)
+            return newConnectionsList
+        }
     }
 })
 
