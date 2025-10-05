@@ -25,7 +25,7 @@ const Feed = () => {
   }, [dispatch]);
 
   if (!feed || feed.length === 0) {
-    return <div className="text-center mt-10">No users found</div>;
+    return <div className="text-center mt-10">No users found!!</div>;
   }
 
   const currentUser = feed[0]; 
