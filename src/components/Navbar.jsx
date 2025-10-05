@@ -50,7 +50,7 @@ const NavBar = () => {
         {user && (
           <>
             <span className="font-medium text-gray-700">
-              Welcome {user.firstName.split(" ")[0]}!
+              Welcome {user?.firstName?.split(" ")[0]}
             </span>
             <div className="relative">
               {/* Avatar button */}
