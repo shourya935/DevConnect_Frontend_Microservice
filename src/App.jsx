@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Body from "./components/Body";
 import Profile from "./components/Profile";
 import Feed from "./components/Feed";
-import SignUpForm from "./components/Signup";
+import Signup from "./components/Signup";
 import Connections from "./components/Connections";
 import Requstes from "./components/Requests";
 import EditPassword from "./components/EditPassword";
@@ -22,7 +22,7 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/upgradepassword" element={<EditPassword/>}/>
-        <Route path="/signup" element={<SignUpForm/>}/>
+        <Route path="/signup" element={<Signup/>}/>
         <Route path="/connections" element={<Connections/>}/>
         <Route path="/requests" element={<Requstes/>}/>
       </Route>

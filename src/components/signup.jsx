@@ -8,7 +8,7 @@ import DevConnectLogo from "../assets/DevConnectLogo.png";
 import { useDispatch } from "react-redux";
 import { addUser } from "../ustils/userSlice";
 
-const SignUpForm = () => {
+const Signup = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -270,4 +270,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default Signup;
