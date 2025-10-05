@@ -10,19 +10,20 @@ const Feed = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getFeed = async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/users/feed`, {
-          withCredentials: true,
-        });
-        dispatch(addFeed(res.data.request)); 
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  const getFeed = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/users/feed`, {
+        withCredentials: true,
+      });
+      console.log("🔁 FEED API Response:", res.data); // <-- Add this
+      dispatch(addFeed(res.data.request)); 
+    } catch (err) {
+      console.error("🛑 Feed API Error:", err);
+    }
+  };
 
-    getFeed();
-  }, [dispatch]);
+  getFeed();
+}, [dispatch]);
 
   if (!feed || feed.length === 0) {
     return <div className="text-center mt-10">No users found!!</div>;
