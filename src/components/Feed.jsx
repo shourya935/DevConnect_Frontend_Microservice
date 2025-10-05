@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BASE_URL } from "../ustils/constants";
+const BASE_URL = import.meta.env.VITE_BASE_URL
 import { addFeed, removeFeedCard } from "../ustils/feedSlice";
 import axios from "axios";
 import UserCard from "./UserCard";

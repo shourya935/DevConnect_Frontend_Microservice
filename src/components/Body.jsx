@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BASE_URL } from "../ustils/constants";
+const BASE_URL = import.meta.env.VITE_BASE_URL
 import axios from "axios";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import NavBar from "./Navbar";

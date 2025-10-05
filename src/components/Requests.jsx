@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { BASE_URL } from "../ustils/constants";
+const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useDispatch, useSelector } from "react-redux";
 import { addRequests, removeRequests } from "../ustils/requestsSlice";
 import UserCard from "./UserCard";

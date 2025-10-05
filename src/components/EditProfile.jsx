@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BASE_URL } from "../ustils/constants";
+const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { addUser } from "../ustils/userSlice";

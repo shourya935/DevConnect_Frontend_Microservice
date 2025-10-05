@@ -4,7 +4,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUser } from "../ustils/userSlice";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../ustils/constants";
+const BASE_URL = import.meta.env.VITE_BASE_URL
 import PopupModal from "./PopupModel";
 
 

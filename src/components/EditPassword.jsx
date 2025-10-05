@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "../ustils/constants";
+const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
