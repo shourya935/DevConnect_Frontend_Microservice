@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import { addFeed, removeFeedCard } from "../ustils/feedSlice";
-import axios from "axios";
+import axiosInstance from "../ustils/axiosInstance";
 import UserCard from "./UserCard";
 
 const Feed = () => {
@@ -12,10 +12,8 @@ const Feed = () => {
   useEffect(() => {
   const getFeed = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/users/feed`, {
-        withCredentials: true,
-      });
-      console.log("🔁 FEED API Response:", res.data); // <-- Add this
+       const res = await axiosInstance.get("/users/feed");
+      console.log("🔁 FEED API Response:", res.data); 
       dispatch(addFeed(res.data.request)); 
     } catch (err) {
       console.error("🛑 Feed API Error:", err);
@@ -33,11 +31,7 @@ const Feed = () => {
 
   const sendRequest = async (status, toUserId) => {
     try {
-      await axios.post(
-        `${BASE_URL}/request/send/${status}/${toUserId}`,
-        {},
-        { withCredentials: true }
-      );
+      await axiosInstance.post(`/request/send/${status}/${toUserId}`);
       dispatch(removeFeedCard(toUserId));
     } catch (err) {
       console.error("Error in sending request", err);

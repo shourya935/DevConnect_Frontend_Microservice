@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../ustils/axiosInstance";
 // import { BASE_URL } from "../ustils/constants";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useNavigate } from "react-router-dom";
@@ -60,12 +60,15 @@ const Signup = () => {
     submitData.append("image", formData.image);
     // submitData.append("gender", formData.gender);
 
-    try {
-      const res = await axios.post(BASE_URL + "/signup", submitData, {
-        withCredentials: true,
-      });
+     try {
+      const res = await axiosInstance.post("/signup", submitData); 
+      
+      //  NEW: Store token in localStorage
+      if (res.data.token) {
+        localStorage.setItem("authToken", res.data.token);
+      }
 
-      dispatch(addUser(res.data?.user));
+      dispatch(addUser(res.data.user));
       navigate("/");
     } catch (err) {
       const message = err.response?.data?.message || "Something went wrong!";

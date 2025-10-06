@@ -1,9 +1,9 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections, removeConnections } from "../ustils/connectionsSlice";
 import UserCard from "./UserCard";
+import axiosInstance from "../ustils/axiosInstance";
 
 function Connections() {
   const dispatch = useDispatch();
@@ -13,9 +13,7 @@ function Connections() {
 
   const loadConnections = async () => {
     try {
-      const res = await axios.get(BASE_URL + "/user/connections", {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.get("/user/connections");
       dispatch(addConnections(res?.data?.requests));
     } catch (err) {
       console.error("Failed to load connections:", err);
@@ -27,9 +25,7 @@ function Connections() {
   }, []);
 
   const removeConnection = async (userId) => {
-    await axios.delete(`${BASE_URL}/user/deleteconnection/${userId}`, {
-      withCredentials: true,
-    });
+    await axiosInstance.delete(`/user/deleteconnection/${userId}`);
     dispatch(removeConnections(userId));
     setShowModal(false);
   };

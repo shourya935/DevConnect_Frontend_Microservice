@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../ustils/axiosInstance";
 import React, { useEffect, useState } from "react";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useDispatch, useSelector } from "react-redux";
@@ -15,9 +15,7 @@ function Requests() {
 
   const loadRequests = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/user/requests/received`, {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.get("/user/requests/received"); 
       dispatch(addRequests(res?.data?.requests));
     } catch (err) {
       console.error("Error in fetching requests", err);
@@ -30,11 +28,7 @@ function Requests() {
 
   const sendReviewRequest = async (status, requestId) => {
     try {
-      const res = await axios.post(
-        `${BASE_URL}/request/review/${status}/${requestId}`,
-        {},
-        { withCredentials: true }
-      );
+      await axiosInstance.post(`/request/review/${status}/${requestId}`);
   
       setShowModal(null);
 

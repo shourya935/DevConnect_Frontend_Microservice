@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import DevConnectLogo from "../assets/DevConnectLogo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-const BASE_URL = import.meta.env.VITE_BASE_URL
+import axiosInstance from "../ustils/axiosInstance";
 import { removeUser } from "../ustils/userSlice";
 
 const NavBar = () => {
@@ -16,11 +15,16 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+      await axiosInstance.post(`/logout`); 
+      localStorage.removeItem("authToken"); // ✅ NEW: Clear token
       dispatch(removeUser());
       navigate("/login");
     } catch (err) {
       console.error(err);
+      // Even if API fails, clear local state
+      localStorage.removeItem("authToken");
+      dispatch(removeUser());
+      navigate("/login");
     }
   };
 

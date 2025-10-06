@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useDispatch } from "react-redux";
-import axios from "axios";
+import axiosInstance from "../ustils/axiosInstance";
 import { addUser } from "../ustils/userSlice";
 
 function EditProfile({ user }) {
@@ -39,9 +39,7 @@ function EditProfile({ user }) {
       formData.skills.forEach((skill) => submitData.append("skills", skill));
       if (formData.image) submitData.append("image", formData.image);
 
-      const res = await axios.patch(BASE_URL + "/profile/edit", submitData, {
-        withCredentials: true,
-      });
+       const res = await axiosInstance.patch("/profile/edit", submitData); 
       dispatch(addUser(res.data?.user));
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong!");

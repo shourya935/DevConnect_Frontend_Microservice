@@ -1,9 +1,10 @@
 
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../ustils/axiosInstance";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+
 
 const EditPassword = () => {
   const [formData, setFormData] = useState({
@@ -29,14 +30,12 @@ const EditPassword = () => {
     setLoading(true);
 
     try {
-      const res = await axios.patch(
-        BASE_URL + "/profile/password",
+      const res = await axiosInstance.patch("/profile/password",
         {
           oldPassword: formData.oldPassword,
           newPassword: formData.newPassword,
           confirmPassword: formData.confirmPassword,
-        },
-        { withCredentials: true }
+        }
       );
 
       alert("✅ " + res.data + " Please login with your new password");

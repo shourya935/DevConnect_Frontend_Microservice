@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DevConnectLogo from "../assets/DevConnectLogo.png";
-import axios from "axios";
+import axiosInstance from "../ustils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { addUser } from "../ustils/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -16,13 +16,15 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    try {
-      const res = await axios.post(
-        BASE_URL + "/login",
-        { emailID, password },
-        { withCredentials: true }
-      );
-      dispatch(addUser(res.data));
+     try {
+      const res = await axiosInstance.post("/login", { emailID, password }); 
+      
+      // NEW: Store token in localStorage
+      if (res.data.token) {
+        localStorage.setItem("authToken", res.data.token);
+      }
+      
+      dispatch(addUser(res.data.user)); 
       navigate("/");
     } catch (err) {
       const message = err.response?.data?.message || "Something went wrong";
