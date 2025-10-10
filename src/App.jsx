@@ -9,6 +9,8 @@ import Signup from "./components/Signup";
 import Connections from "./components/Connections";
 import Requstes from "./components/Requests";
 import EditPassword from "./components/EditPassword";
+import ChatPage from "./components/chatPage";
+import ChatContainer from "./components/ChatContainer";
 
 
 
@@ -25,6 +27,8 @@ function App() {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/connections" element={<Connections/>}/>
         <Route path="/requests" element={<Requstes/>}/>
+        <Route path="/chats" element={<ChatPage/>}/>
+        <Route path="/chatcontainer" element={<ChatContainer/>}/>
       </Route>
     </Routes>
     </BrowserRouter>

@@ -85,6 +85,11 @@ const NavBar = () => {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/chats" onClick={() => handleLinkClick()}>
+                      Chats
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/connections" onClick={() => handleLinkClick()}>
                       My Connections
                     </Link>
