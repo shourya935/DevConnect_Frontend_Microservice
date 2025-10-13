@@ -5,7 +5,9 @@ import connectionsReducer from "./connectionsSlice"
 import requestsReducer from "./requestsSlice"
 import chatsReducer from "./chatsSlice"
 import selectedUserReducer from "./selectedUserSlice"
-import messagesSlice from "./messagesSlice"
+import messagesReducer from "./messagesSlice"
+import onlineUsersReducer from "./onlineUsers"
+
 
 const appStore = configureStore({
     reducer: {
@@ -15,7 +17,8 @@ const appStore = configureStore({
         requests: requestsReducer,
         chats: chatsReducer,
         selectedUser: selectedUserReducer,
-        messages: messagesSlice
+        messages: messagesReducer,
+        onlineUsers: onlineUsersReducer
     }
 })
 

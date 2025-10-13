@@ -38,7 +38,7 @@ function Body() {
     }
   }, []);
 
-  const hideNavRoutes = ["/login", "/signup"];
+  const hideNavRoutes = ["/login", "/signup", "/chatcontainer"];
   const shouldHideNav = hideNavRoutes.includes(location.pathname);
 
   return (

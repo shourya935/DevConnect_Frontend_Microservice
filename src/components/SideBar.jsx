@@ -8,7 +8,7 @@ function SideBar() {
   const dispatch = useDispatch();
   const chats = useSelector((store) => store.chats);
   const selectedUser = useSelector((store) => store.selectedUser);
-  const onlineUsers = [];
+  const onlineUsers = useSelector((store) => store.onlineUsers)
 
   const loadChats = async () => {
     try {

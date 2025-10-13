@@ -6,10 +6,17 @@ const messagesSlice = createSlice({
     name: "messages",
     initialState,
     reducers: {
-        addMessages: (state, action) => action.payload,
-
+        addMessages: (state, action) => {
+            return action.payload; // Replace all messages
+        },
+        appendMessage: (state, action) => {
+            state.push(action.payload); // Add single message (Redux Toolkit uses Immer)
+        },
+        clearMessages: () => {
+            return []; // Clear messages when user changes
+        }
     }
 })
 
-export const {addMessages} = messagesSlice.actions
+export const {addMessages, appendMessage, clearMessages} = messagesSlice.actions
 export default messagesSlice.reducer
