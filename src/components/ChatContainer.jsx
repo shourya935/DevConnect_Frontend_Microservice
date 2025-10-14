@@ -30,7 +30,7 @@ useEffect(() => {
   if (selectedUser?._id) {
     loadMessage();
   }
-}, [selectedUser?._id]);
+}, [selectedUser._id]);
 
   if (isMessageLoading) {
     return (

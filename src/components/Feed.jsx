@@ -4,10 +4,12 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 import { addFeed, removeFeedCard } from "../ustils/feedSlice";
 import axiosInstance from "../ustils/axiosInstance";
 import UserCard from "./UserCard";
+import { setSelectedUser } from "../ustils/selectedUserSlice";
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
   const dispatch = useDispatch();
+
 
   useEffect(() => {
   const getFeed = async () => {
@@ -28,6 +30,9 @@ const Feed = () => {
   }
 
   const currentUser = feed[0]; 
+  if(currentUser){
+    setSelectedUser(currentUser)
+  }
 
   const sendRequest = async (status, toUserId) => {
     try {
@@ -82,6 +87,9 @@ const Feed = () => {
         >
           Skip
         </button>
+
+        {/* {send message buttont} */}
+        
         <button
           className="w-40 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
           onClick={() => sendRequest("interested", currentUser._id)}
