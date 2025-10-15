@@ -1,37 +1,38 @@
-import React, { useState, useRef } from 'react';
-import { Send, Image, X } from 'lucide-react';
-import { useSelector, useDispatch } from 'react-redux';
-import axiosInstance from '../ustils/axiosInstance';
-import { appendMessage } from '../ustils/messagesSlice';
+import React, { useState, useRef } from "react";
+import { Send, Image, X } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import axiosInstance from "../ustils/axiosInstance";
+import { appendMessage } from "../ustils/messagesSlice";
 
 function MessageInput() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [isSending, setIsSending] = useState(false);
   const fileInputRef = useRef(null);
-  
+
   const selectedUser = useSelector((store) => store.selectedUser);
   const dispatch = useDispatch();
+  const user = useSelector((store) => store.user);
 
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
       // Validate file type
-      const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      const validTypes = ["image/jpeg", "image/jpg", "image/png"];
       if (!validTypes.includes(file.type)) {
-        alert('Only .jpeg, .jpg, or .png files are allowed');
+        alert("Only .jpeg, .jpg, or .png files are allowed");
         return;
       }
-      
+
       // Validate file size (3MB)
       if (file.size > 3 * 1024 * 1024) {
-        alert('File size must be less than 3MB');
+        alert("File size must be less than 3MB");
         return;
       }
 
       setImageFile(file);
-      
+
       // Create preview
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -45,19 +46,19 @@ function MessageInput() {
     setImageFile(null);
     setImagePreview(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!text.trim() && !imageFile) {
       return; // Don't send empty messages
     }
 
     if (!selectedUser?._id) {
-      alert('Please select a user to send message');
+      alert("Please select a user to send message");
       return;
     }
 
@@ -65,13 +66,13 @@ function MessageInput() {
 
     try {
       const formData = new FormData();
-      
+
       if (text.trim()) {
-        formData.append('text', text.trim());
+        formData.append("text", text.trim());
       }
-      
+
       if (imageFile) {
-        formData.append('image', imageFile);
+        formData.append("image", imageFile);
       }
 
       const response = await axiosInstance.post(
@@ -79,23 +80,30 @@ function MessageInput() {
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      console.log('Message sent successfully:', response.data);
+      console.log("Message sent successfully:", response.data);
+
+      const newMessage = {
+        ...response.data,
+        senderId: user._id,
+      };
 
       // Add the new message to Redux store
-      dispatch(appendMessage(response.data));
+      dispatch(appendMessage(newMessage));
 
       // Clear form after successful send
-      setText('');
+      setText("");
       removeImage();
-      
     } catch (error) {
-      console.error('Error sending message:', error);
-      const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Failed to send message';
+      console.error("Error sending message:", error);
+      const errorMessage =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "Failed to send message";
       alert(errorMessage);
     } finally {
       setIsSending(false);
@@ -103,7 +111,7 @@ function MessageInput() {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
     }
@@ -140,7 +148,7 @@ function MessageInput() {
         >
           <Image size={24} />
         </button>
-        
+
         <input
           ref={fileInputRef}
           type="file"
