@@ -7,6 +7,8 @@ import { ArrowLeft } from "lucide-react";
 import DevConnectLogo from "../assets/DevConnectLogo.png";
 import { useDispatch } from "react-redux";
 import { addUser } from "../ustils/userSlice";
+import { connectSocket } from "../ustils/socketSlice";
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -69,6 +71,7 @@ const Signup = () => {
       }
 
       dispatch(addUser(res.data.user));
+      dispatch(connectSocket(res.data.user._id));
       navigate("/");
     } catch (err) {
       const message = err.response?.data?.message || "Something went wrong!";

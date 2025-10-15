@@ -7,6 +7,7 @@ import chatsReducer from "./chatsSlice"
 import selectedUserReducer from "./selectedUserSlice"
 import messagesReducer from "./messagesSlice"
 import onlineUsersReducer from "./onlineUsers"
+import socketReducer from "./socketSlice"
 
 
 const appStore = configureStore({
@@ -18,7 +19,8 @@ const appStore = configureStore({
         chats: chatsReducer,
         selectedUser: selectedUserReducer,
         messages: messagesReducer,
-        onlineUsers: onlineUsersReducer
+        onlineUsers: onlineUsersReducer,
+        socket: socketReducer
     }
 })
 

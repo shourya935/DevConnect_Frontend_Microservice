@@ -6,6 +6,7 @@ import { addUser } from "../ustils/userSlice";
 import { useNavigate } from "react-router-dom";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import PopupModal from "./PopupModel";
+import { connectSocket } from "../ustils/socketSlice";
 
 
 function Login() {
@@ -25,6 +26,7 @@ function Login() {
       }
       
       dispatch(addUser(res.data.user)); 
+      dispatch(connectSocket(res.data.user._id));
       navigate("/");
     } catch (err) {
       const message = err.response?.data?.message || "Something went wrong";

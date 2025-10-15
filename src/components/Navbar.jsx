@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../ustils/axiosInstance";
 import { removeUser } from "../ustils/userSlice";
+import { disconnectSocket } from "../ustils/socketSlice";
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
@@ -18,12 +19,14 @@ const NavBar = () => {
       await axiosInstance.post(`/logout`); 
       localStorage.removeItem("authToken"); // ✅ NEW: Clear token
       dispatch(removeUser());
+      dispatch(disconnectSocket());
       navigate("/login");
     } catch (err) {
       console.error(err);
       // Even if API fails, clear local state
       localStorage.removeItem("authToken");
       dispatch(removeUser());
+      dispatch(disconnectSocket());
       navigate("/login");
     }
   };
