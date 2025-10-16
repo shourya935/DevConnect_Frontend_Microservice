@@ -9,6 +9,7 @@ import { disconnectSocket } from "../ustils/socketSlice";
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
+  const onlineUsers = useSelector((store) => store.onlineUsers)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,15 +18,15 @@ const NavBar = () => {
   const handleLogout = async () => {
     try {
       await axiosInstance.post(`/logout`); 
-      localStorage.removeItem("authToken"); // ✅ NEW: Clear token
-      dispatch(removeUser());
-      dispatch(disconnectSocket());
+      // localStorage.removeItem("authToken"); // ✅ NEW: Clear token
+      // dispatch(removeUser());
+      dispatch(disconnectSocket(user._id));
       navigate("/login");
     } catch (err) {
       console.error(err);
       // Even if API fails, clear local state
-      localStorage.removeItem("authToken");
-      dispatch(removeUser());
+      // localStorage.removeItem("authToken");
+      // dispatch(removeUser());
       dispatch(disconnectSocket());
       navigate("/login");
     }
@@ -54,10 +55,10 @@ const NavBar = () => {
 
       {/* Right side: User Name + Profile */}
       <div className="flex-none flex items-center gap-2">
-        {user && (
+        
           <>
             <span className="font-medium text-gray-700">
-              Welcome {user?.firstName?.split(" ")[0]}
+              {user?.firstName?.split(" ")[0]}
             </span>
             <div className="relative">
               {/* Avatar button */}
@@ -69,15 +70,18 @@ const NavBar = () => {
               >
                 <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                   <img
-                    src={user.photoURL}
+                    src={user?.photoURL  || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"} 
                     alt="User Profile"
                     className="object-cover"
                   />
+                  {onlineUsers?.includes(user?._id) && (
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-white" />
+              )}
                 </div>
               </div>
-
-              {/* Dropdown menu */}
-              {isOpen && (
+          
+             
+              {isOpen && user && (
                 <ul className="absolute right-0 mt-3 z-50 p-2 shadow bg-base-100 rounded-box w-52 menu menu-sm">
                   <li>
                     <Link to="/" onClick={() => handleLinkClick()}>Home</Link>
@@ -113,7 +117,7 @@ const NavBar = () => {
               )}
             </div>
           </>
-        )}
+     
       </div>
     </div>
   );

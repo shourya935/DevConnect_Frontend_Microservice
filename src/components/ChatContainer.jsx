@@ -3,10 +3,11 @@ import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import axiosInstance from "../ustils/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessages } from "../ustils/messagesSlice";
+import { addMessages, appendMessage } from "../ustils/messagesSlice";
 import toast from "react-hot-toast";
 import ChatContainerSkeleton from "./ChatContainerSkeleton";
 import { formatMessageTime } from "../ustils/formatMessageTime";
+import { getSocket } from "../ustils/socketSlice";
 function ChatContainer() {
   const [isMessageLoading, setIsMessageLoading] = useState(false);
   const selectedUser = useSelector((store) => store.selectedUser);
@@ -17,7 +18,7 @@ function ChatContainer() {
   const loadMessage = async () => {
   setIsMessageLoading(true);
   try {
-    const res = await axiosInstance.get(`/message/${selectedUser._id}`);
+    const res = await axiosInstance.get(`/message/${selectedUser?._id}`);
     dispatch(addMessages(res.data));
   } catch (err) {
     toast.error(err.response?.data?.message || err.message);
@@ -27,10 +28,40 @@ function ChatContainer() {
 };
 
 useEffect(() => {
-  if (selectedUser?._id) {
-    loadMessage();
+  if (!selectedUser?._id) return;
+
+  // load history
+  loadMessage();
+
+  const socket = getSocket();
+  if (!socket) {
+    console.warn("Socket not connected yet");
+    return;
   }
-}, [selectedUser._id]);
+
+  // handler receives populatedMessage from server
+  const handleNewMessage = (newMessage) => {
+    // If the incoming message is for the currently selected chat, append it
+    const incomingSenderId = String(newMessage.senderId?._id ?? newMessage.senderId);
+    const incomingReceiverId = String(newMessage.receiverId?._id ?? newMessage.receiverId);
+
+    // If message belongs to this chat (either sent by selectedUser or sent to selectedUser)
+    const isRelevant =
+      incomingSenderId === String(selectedUser._id) ||
+      incomingReceiverId === String(selectedUser._id);
+
+    if (isRelevant) {
+      dispatch(appendMessage(newMessage));
+    }
+  };
+
+  socket.on("newMessage", handleNewMessage);
+
+  // cleanup
+  return () => {
+    socket.off("newMessage", handleNewMessage);
+  };
+}, [selectedUser?._id]);
 
   if (isMessageLoading) {
     return (
@@ -57,7 +88,7 @@ useEffect(() => {
                 <div className="size-10 rounded-full border">
                   <img
                     src={
-                      message.senderId === user._id
+                      message.senderId === user?._id
                         ? user?.photoURL
                         : selectedUser?.photoURL
                     }

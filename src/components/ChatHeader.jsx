@@ -8,7 +8,7 @@ const ChatHeader = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const selectedUser = useSelector((store) => store.selectedUser)
-  const  onlineUsers  = []
+  const  onlineUsers  = useSelector((store) => store.onlineUsers)
 
   const handleClose =  () => {
     dispatch(setSelectedUser(null))

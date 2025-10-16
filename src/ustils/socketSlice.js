@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 import { io } from "socket.io-client";
+import { addOnlineUser, removeOnlineUser } from "./onlineUsers";
 
 let socket = null;
 
@@ -19,6 +21,7 @@ export const { setConnected } = socketSlice.actions;
 
 // --- Socket connection functions (not reducers) ---
 export const connectSocket = (userId) => (dispatch) => {
+   
   if (!socket) {
     socket = io(import.meta.env.VITE_BASE_URL, {
       query: { userId },
@@ -30,18 +33,24 @@ export const connectSocket = (userId) => (dispatch) => {
       dispatch(setConnected(true));
     });
 
+    socket.on("getOnlineUsers", (userIds) => {
+        dispatch(addOnlineUser(userIds))
+    })
+
     socket.on("disconnect", () => {
       console.log("⚠️ Socket disconnected");
       dispatch(setConnected(false));
+     
     });
   }
 };
 
-export const disconnectSocket = () => (dispatch) => {
+export const disconnectSocket = (userId) => (dispatch) => {
   if (socket) {
     socket.disconnect();
     socket = null;
     dispatch(setConnected(false));
+    dispatch(removeOnlineUser(userId))
   }
 };
 
