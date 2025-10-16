@@ -5,6 +5,7 @@ import axiosInstance from "../ustils/axiosInstance";
 import UserCard from "./UserCard";
 import { setSelectedUser } from "../ustils/selectedUserSlice";
 import { addChatUser } from "../ustils/chatsSlice";
+import BottomNavigation from "./BottomNavigation";
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
@@ -143,6 +144,7 @@ const Feed = () => {
               >
                 Send Request
               </button>
+            
             </div>
           )}
         </div>
@@ -174,6 +176,7 @@ const Feed = () => {
             >
               Send Request
             </button>
+          
           </>
         ) : (
           <div className="w-full max-w-sm flex flex-col gap-4">
@@ -207,6 +210,7 @@ const Feed = () => {
             </div>
           </div>
         )}
+         
       </div>
     </div>
   );

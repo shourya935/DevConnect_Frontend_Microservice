@@ -60,7 +60,7 @@ const NavBar = () => {
         
           <>
             <span className="font-medium text-gray-700">
-              {user?.firstName?.split(" ")[0]}
+              Welcome {user?.firstName?.split(" ")[0]}
             </span>
             <div className="relative">
               {/* Avatar button */}
@@ -85,29 +85,7 @@ const NavBar = () => {
              
               {isOpen && user && (
                 <ul className="absolute right-0 mt-3 z-50 p-2 shadow bg-base-100 rounded-box w-52 menu menu-sm">
-                  <li>
-                    <Link to="/" onClick={() => handleLinkClick()}>Home</Link>
-                  </li>
-                  <li>
-                    <Link to="/profile" onClick={() => handleLinkClick()}>
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/chats" onClick={() => handleLinkClick()}>
-                      Chats
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/connections" onClick={() => handleLinkClick()}>
-                      My Connections
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/requests" onClick={() => handleLinkClick()}>
-                      Requests
-                    </Link>
-                  </li>
+        
                   <li>
                     <Link
                       onClick={() => handleLinkClick(handleLogout)}
