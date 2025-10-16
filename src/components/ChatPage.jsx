@@ -27,12 +27,12 @@ function ChatPage() {
   }, [selectedUser, navigate]);
 
   return (
-    <div className="h-screen bg-gray-50">
-      <div className="flex items-center justify-center pt-16 px-2 sm:px-4 lg:pt-20">
+    <div className="h-screen bg-gray-50 ">
+      <div className="flex items-center justify-center pt-2 px-2 sm:px-4 lg:pt-20">
         <div className="bg-white rounded-lg shadow-lg w-full max-w-7xl h-[calc(100vh-5rem)] lg:h-[calc(100vh-8rem)]">
           <div className="flex h-full rounded-lg overflow-hidden">
             {/* Sidebar - Always visible on desktop, only when no selected user on mobile */}
-            <div className={`
+            <div className={` 
               w-full lg:w-80 xl:w-96 
               border-r border-gray-200
               ${selectedUser ? 'hidden lg:block' : 'block'}

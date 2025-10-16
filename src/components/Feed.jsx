@@ -89,7 +89,10 @@ const Feed = () => {
         <div className="flex flex-col items-center bg-white rounded-lg shadow-md w-full h-[700px] overflow-hidden">
           {/* User Card */}
           <div className="w-full flex-grow">
-            <UserCard user={currentUser} />
+            <UserCard 
+              user={currentUser} 
+              onSendMessage={() => setShowMessageInput(true)}
+            />
           </div>
 
           {/* Message Input (Mobile) */}
@@ -127,26 +130,18 @@ const Feed = () => {
 
           {/* Buttons (Mobile) */}
           {!showMessageInput && (
-            <div className="w-full flex flex-col gap-2 px-4 pt-0 pb-4 mb-28">
-              <div className="flex gap-2">
-                <button
-                  className="flex-1 px-4 py-3 font-semibold bg-gray-300 text-gray-800 rounded shadow-md hover:bg-gray-400 active:scale-95 transition-transform duration-150"
-                  onClick={() => sendRequest("ignored", currentUser._id)}
-                >
-                  Skip
-                </button>
-                <button
-                  className="flex-1 px-4 py-3 font-semibold bg-blue-500 text-white rounded shadow-md hover:bg-blue-600 active:scale-95 transition-transform duration-150"
-                  onClick={() => sendRequest("interested", currentUser._id)}
-                >
-                  Send Request
-                </button>
-              </div>
+            <div className="w-full flex gap-2 px-4 pt-0 pb-4 mb-28">
               <button
-                className="w-full px-4 py-3 font-semibold bg-green-500 text-white rounded shadow-md hover:bg-green-600 active:scale-95 transition-transform duration-150"
-                onClick={() => setShowMessageInput(true)}
+                className="flex-1 px-4 py-3 font-semibold bg-gray-300 text-gray-800 rounded shadow-md hover:bg-gray-400 active:scale-95 transition-transform duration-150"
+                onClick={() => sendRequest("ignored", currentUser._id)}
               >
-                Send Message
+                Skip
+              </button>
+              <button
+                className="flex-1 px-4 py-3 font-semibold bg-blue-500 text-white rounded shadow-md hover:bg-blue-600 active:scale-95 transition-transform duration-150"
+                onClick={() => sendRequest("interested", currentUser._id)}
+              >
+                Send Request
               </button>
             </div>
           )}
@@ -156,7 +151,10 @@ const Feed = () => {
       {/* Desktop View */}
       <div className="hidden md:flex flex-1 justify-center items-center px-6 py-8">
         <div className="w-full max-w-md">
-          <UserCard user={currentUser} />
+          <UserCard 
+            user={currentUser} 
+            onSendMessage={() => setShowMessageInput(true)}
+          />
         </div>
       </div>
 
@@ -168,13 +166,6 @@ const Feed = () => {
               onClick={() => sendRequest("ignored", currentUser._id)}
             >
               Skip
-            </button>
-
-            <button
-              className="w-40 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-              onClick={() => setShowMessageInput(true)}
-            >
-              Send Message
             </button>
 
             <button

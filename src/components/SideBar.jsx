@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../ustils/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { addChats } from "../ustils/chatsSlice";
 import { setSelectedUser } from "../ustils/selectedUserSlice";
+import SidebarSkeleton from "./SidebarSkeleton";
 
 function SideBar() {
+  const [isChatsLoading, setIsChatsLoading] = useState(false);
   const dispatch = useDispatch();
   const chats = useSelector((store) => store.chats);
   const selectedUser = useSelector((store) => store.selectedUser);
@@ -12,16 +14,25 @@ function SideBar() {
 
   const loadChats = async () => {
     try {
+      setIsChatsLoading(true)
       const res = await axiosInstance.get("/message/connections");
       dispatch(addChats(res?.data?.requests));
     } catch (err) {
       console.error("Failed to load chats", err);
+    }finally{
+      setIsChatsLoading(false)
     }
   };
 
   useEffect(() => {
     loadChats();
   }, []);
+
+  if(isChatsLoading){
+    return(
+      <SidebarSkeleton/>
+    )
+  }
 
   if (chats.length === 0) {
     return (
