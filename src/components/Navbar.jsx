@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../ustils/axiosInstance";
 import { removeUser } from "../ustils/userSlice";
 import { disconnectSocket } from "../ustils/socketSlice";
+import { setSelectedUser } from "../ustils/selectedUserSlice";
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
@@ -35,6 +36,7 @@ const NavBar = () => {
   const handleLinkClick = (callback) => {
     setIsOpen(false); // close dropdown
     if (callback) callback();
+    dispatch(setSelectedUser(null))
   };
 
   return (

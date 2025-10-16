@@ -1,16 +1,23 @@
 import React, { useEffect } from 'react';
 import NoChatSelected from './NoChatSelected';
 import ChatContainer from './ChatContainer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SideBar from './SideBar';
 import { useNavigate } from 'react-router-dom';
+import { setSelectedUser } from '../ustils/selectedUserSlice';
 
 function ChatPage() {
   const selectedUser = useSelector((store) => store.selectedUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
+    useEffect(() => {
+    dispatch(setSelectedUser(null));
+  }, [dispatch]);
 
   // Handle mobile navigation
   useEffect(() => {
+   
     const isMobile = window.innerWidth < 1024; // lg breakpoint
     
     if (isMobile && selectedUser) {
