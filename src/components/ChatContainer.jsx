@@ -16,52 +16,56 @@ function ChatContainer() {
   const user = useSelector((store) => store.user);
 
   const loadMessage = async () => {
-  setIsMessageLoading(true);
-  try {
-    const res = await axiosInstance.get(`/message/${selectedUser?._id}`);
-    dispatch(addMessages(res.data));
-  } catch (err) {
-    toast.error(err.response?.data?.message || err.message);
-  } finally {
-    setIsMessageLoading(false);
-  }
-};
-
-useEffect(() => {
-  if (!selectedUser?._id) return;
-
-  // load history
-  loadMessage();
-
-  const socket = getSocket();
-  if (!socket) {
-    console.warn("Socket not connected yet");
-    return;
-  }
-
-  // handler receives populatedMessage from server
-  const handleNewMessage = (newMessage) => {
-    // If the incoming message is for the currently selected chat, append it
-    const incomingSenderId = String(newMessage.senderId?._id ?? newMessage.senderId);
-    const incomingReceiverId = String(newMessage.receiverId?._id ?? newMessage.receiverId);
-
-    // If message belongs to this chat (either sent by selectedUser or sent to selectedUser)
-    const isRelevant =
-      incomingSenderId === String(selectedUser._id) ||
-      incomingReceiverId === String(selectedUser._id);
-
-    if (isRelevant) {
-      dispatch(appendMessage(newMessage));
+    setIsMessageLoading(true);
+    try {
+      const res = await axiosInstance.get(`/message/${selectedUser?._id}`);
+      dispatch(addMessages(res.data));
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message);
+    } finally {
+      setIsMessageLoading(false);
     }
   };
 
-  socket.on("newMessage", handleNewMessage);
+  useEffect(() => {
+    if (!selectedUser?._id) return;
 
-  // cleanup
-  return () => {
-    socket.off("newMessage", handleNewMessage);
-  };
-}, [selectedUser?._id]);
+    // load history
+    loadMessage();
+
+    const socket = getSocket();
+    if (!socket) {
+      console.warn("Socket not connected yet");
+      return;
+    }
+
+    // handler receives populatedMessage from server
+    const handleNewMessage = (newMessage) => {
+  // ignore self-echo
+  if (String(newMessage.senderId?._id ?? newMessage.senderId) === String(user._id)) return;
+
+  const isDuplicate = messages.some((msg) => msg._id === newMessage._id);
+  if (isDuplicate) return;
+
+  const incomingSenderId = String(newMessage.senderId?._id ?? newMessage.senderId);
+  const incomingReceiverId = String(newMessage.receiverId?._id ?? newMessage.receiverId);
+  const isRelevant =
+    incomingSenderId === String(selectedUser._id) ||
+    incomingReceiverId === String(selectedUser._id);
+
+  if (isRelevant) {
+    dispatch(appendMessage(newMessage));
+  }
+};
+
+
+    socket.on("newMessage", handleNewMessage);
+
+    // cleanup
+    return () => {
+      socket.off("newMessage", handleNewMessage);
+    };
+  }, [selectedUser?._id]);
 
   if (isMessageLoading) {
     return (
@@ -81,7 +85,10 @@ useEffect(() => {
             <div
               key={message._id}
               className={`chat ${
-                message?.senderId === user?._id ? "chat-end" : "chat-start"
+                String(message?.senderId?._id ?? message?.senderId) ===
+                String(user?._id)
+                  ? "chat-end"
+                  : "chat-start"
               }`}
             >
               <div className=" chat-image avatar">
@@ -103,15 +110,15 @@ useEffect(() => {
                 </time>
               </div>
               <div className="chat-bubble flex flex-col">
-              {message?.image && (
-                <img
-                  src={message.image}
-                  alt="Attachment"
-                  className="sm:max-w-[200px] rounded-md mb-2"
-                />
-              )}
-              {message?.text && <p>{message?.text}</p>}
-            </div>
+                {message?.image && (
+                  <img
+                    src={message.image}
+                    alt="Attachment"
+                    className="sm:max-w-[200px] rounded-md mb-2"
+                  />
+                )}
+                {message?.text && <p>{message?.text}</p>}
+              </div>
             </div>
           ))}
         </div>
