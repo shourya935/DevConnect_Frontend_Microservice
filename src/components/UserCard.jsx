@@ -48,7 +48,7 @@ function UserCard({ user, onMessageSent, onSkip, onSendRequest }) {
           <div className="flex items-center justify-between mb-1">
             <h2 className="text-2xl font-bold">
               {firstName}{" "}
-              {age && <span className="text-gray-300 text-lg">{age}</span>}
+              {age && <span className="text-gray-300 text-lg">({age})</span>}
             </h2>
 
             <button
