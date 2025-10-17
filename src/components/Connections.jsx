@@ -2,21 +2,26 @@ import React, { useEffect, useState } from "react";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections, removeConnections } from "../ustils/connectionsSlice";
-import UserCard from "./UserCard";
+import UserCard, { UserCardWithoutSendButton } from "./UserCard";
 import axiosInstance from "../ustils/axiosInstance";
+import SidebarSkeleton from "./SidebarSkeleton";
 
 function Connections() {
-  const dispatch = useDispatch();
-  const connections = useSelector((store) => store.connections);
   const [selectedUser, setSelectedUser] = useState(null); // for modal
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const connections = useSelector((store) => store.connections);
 
   const loadConnections = async () => {
     try {
+      setIsLoading(true)
       const res = await axiosInstance.get("/user/connections");
       dispatch(addConnections(res?.data?.requests));
     } catch (err) {
       console.error("Failed to load connections:", err);
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -39,6 +44,17 @@ function Connections() {
     setSelectedUser(null);
     setShowModal(false);
   };
+
+  if(isLoading){
+    return(
+      <>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        Your Connections
+      </h2>
+      <SidebarSkeleton/>
+      </>
+    )
+  }
 
   if (connections.length === 0) {
     return (
@@ -95,18 +111,15 @@ function Connections() {
             </button>
 
             {/* User card */}
-            <UserCard user={selectedUser} />
+            <UserCardWithoutSendButton user={selectedUser} />
 
             {/* Text and button */}
-            <div className="mt-6 flex flex-col items-center gap-3">
-              <span className="text-gray-700 text-center text-lg">
-                {`Remove ${selectedUser.firstName} from your connections`}
-              </span>
+            <div className="mt-0 flex flex-col items-center gap-3">
               <button
                 onClick={() => removeConnection(selectedUser._id)}
-                className="w-full px-6 py-3 bg-red-500 text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-red-600 active:scale-95 transition-transform duration-150"
+                className="w-full px-3 py-1 bg-red-500 text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-red-600 active:scale-95 transition-transform duration-150"
               >
-                Remove ⊘
+                Remove from connections ⊘
               </button>
             </div>
           </div>

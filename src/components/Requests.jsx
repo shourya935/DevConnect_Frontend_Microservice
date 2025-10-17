@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import { useDispatch, useSelector } from "react-redux";
 import { addRequests, removeRequests } from "../ustils/requestsSlice";
-import UserCard from "./UserCard";
+import  { UserCardWithoutSendButton } from "./UserCard";
+import SidebarSkeleton from "./SidebarSkeleton";
 
 function Requests() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
  
 
   const dispatch = useDispatch();
@@ -15,10 +17,13 @@ function Requests() {
 
   const loadRequests = async () => {
     try {
+      setIsLoading(true)
       const res = await axiosInstance.get("/user/requests/received"); 
       dispatch(addRequests(res?.data?.requests));
     } catch (err) {
       console.error("Error in fetching requests", err);
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -51,6 +56,17 @@ function Requests() {
     setSelectedUser(null);
     setShowModal(false);
   };
+
+  if(isLoading){
+    return(
+      <>
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">
+        🔗 Incoming Requests
+      </h2>
+      <SidebarSkeleton/>
+      </>
+    )
+  }
 
   if (requests.length === 0) {
     return (
@@ -113,40 +129,43 @@ function Requests() {
 
       {/* Modal */}
       {showModal && selectedUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4">
-          <div className="bg-white w-full max-w-md rounded-xl shadow-lg overflow-hidden relative">
-            <button
-              onClick={closeModal}
-              className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl font-bold"
-            >
-              &times;
-            </button>
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center px-4 pt-10">
+    <div className="bg-white w-full max-w-md rounded-xl shadow-lg overflow-hidden relative animate-slide-down">
+      {/* Close button */}
+      <button
+        onClick={closeModal}
+        className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl font-bold"
+      >
+        &times;
+      </button>
 
-            <div className="p-6">
-              <UserCard user={selectedUser.fromUserId} />
-
-              <div className="mt-4 flex justify-between gap-4">
-                <button
-                  className="flex-1 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                  onClick={() =>
-                    sendReviewRequest("accepted", selectedUser._id)
-                  }
-                >
-                  Accept
-                </button>
-                <button
-                  className="flex-1 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition"
-                  onClick={() =>
-                    sendReviewRequest("rejected", selectedUser._id)
-                  }
-                >
-                  Reject
-                </button>
-              </div>
-            </div>
-          </div>
+      <div className="p-6 flex flex-col gap-4">
+        {/* Accept / Reject buttons */}
+        <div className="flex justify-between gap-4">
+          <button
+            className="flex-1 py-1.5 text-white font-semibold bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition"
+            onClick={() =>
+              sendReviewRequest("accepted", selectedUser._id)
+            }
+          >
+            Accept
+          </button>
+          <button
+            className="flex-1 py-1.5 text-gray-800 font-semibold bg-gray-200 rounded-lg shadow-md hover:bg-gray-300 transition"
+            onClick={() =>
+              sendReviewRequest("rejected", selectedUser._id)
+            }
+          >
+            Reject
+          </button>
         </div>
-      )}
+
+        {/* User Profile */}
+        <UserCardWithoutSendButton user={selectedUser.fromUserId} />
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }

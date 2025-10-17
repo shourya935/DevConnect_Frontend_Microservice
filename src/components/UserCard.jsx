@@ -160,7 +160,7 @@ export function UserCardWithoutSendButton({ user }) {
 
   return (
     <div className="bg-white shadow-md rounded-lg w-full overflow-hidden">
-  <div className="relative h-[520px] w-full">
+  <div className="relative h-[500px] w-full">
     <img
       src={photoURL || "https://via.placeholder.com/300x500"}
       alt="User Profile"
@@ -198,6 +198,8 @@ export function UserCardWithoutSendButton({ user }) {
 
   );
 }
+
+
 
 
 export default UserCard;
