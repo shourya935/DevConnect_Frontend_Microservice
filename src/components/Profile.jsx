@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EditProfile from "./EditProfile";
 import { useSelector } from "react-redux";
-import UserCard from "./UserCard";
+import UserCard, { UserCardWithoutSendButton } from "./UserCard";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
@@ -28,7 +28,7 @@ function Profile() {
     {/* User Profile Card */}
     <div className="flex-1">
       <div className="card w-full bg-white shadow-md rounded-lg overflow-hidden">
-        <UserCard user={user} />
+        <UserCardWithoutSendButton user={user} />
         <div className="p-6">
           <div className="flex justify-center gap-4 mt-4 flex-wrap">
             <button

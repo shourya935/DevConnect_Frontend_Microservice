@@ -5,6 +5,7 @@ import NavBar from "./Navbar";
 import BottomNavigation from "./BottomNavigation";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../ustils/userSlice";
+import { setSelectedUser } from "../ustils/selectedUserSlice";
 
 function Body() {
   const dispatch = useDispatch();
@@ -38,8 +39,10 @@ function Body() {
     }
   }, []);
 
+
+
   // Routes where Navbar should be hidden
-  const hideNavRoutes = ["/signup","/", "/chatcontainer"];
+  const hideNavRoutes = ["/signup", "/chatcontainer"];
   const shouldHideNav = hideNavRoutes.includes(location.pathname);
 
   // Routes where BottomNavigation should be hidden (login, signup, chatcontainer)

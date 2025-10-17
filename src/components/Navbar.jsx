@@ -40,7 +40,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-sm px-4 h-14">
+    <div className="navbar  bg-base-100 shadow-sm px-4 h-14">
       {/* Left side: Logo */}
       <div className="flex-1">
         <Link
