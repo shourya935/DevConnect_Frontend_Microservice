@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import axiosInstance from "../ustils/axiosInstance";
 // import { BASE_URL } from "../ustils/constants";
-const BASE_URL = import.meta.env.VITE_BASE_URL
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import DevConnectLogo from "../assets/DevConnectLogo.png";
 import { useDispatch } from "react-redux";
 import { addUser } from "../ustils/userSlice";
 import { connectSocket } from "../ustils/socketSlice";
-import  { HomePageSkeletonSignup } from "./HomePageSkeleton";
-
+import { HomePageSkeletonSignup } from "./HomePageSkeleton";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -63,9 +62,9 @@ const Signup = () => {
     submitData.append("image", formData.image);
     // submitData.append("gender", formData.gender);
 
-     try {
-      const res = await axiosInstance.post("/signup", submitData); 
-      
+    try {
+      const res = await axiosInstance.post("/signup", submitData);
+
       //  NEW: Store token in localStorage
       if (res.data.token) {
         localStorage.setItem("authToken", res.data.token);
@@ -105,14 +104,13 @@ const Signup = () => {
     }));
   };
 
-  if(loading){
-    return(
+  if (loading) {
+    return (
       <>
-      <HomePageSkeletonSignup/>
+        <HomePageSkeletonSignup />
       </>
-    )
+    );
   }
-
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -221,21 +219,54 @@ const Signup = () => {
           </div>
 
           <label className="block">
-            <span className="text-sm font-medium text-gray-700 mb-1">
-              Profile Picture <span className="text-red-500">*</span>
-            </span>
-            <label className="w-full bg-blue-50 text-blue-600 border border-dashed border-blue-400 px-4 py-2 rounded-md text-center cursor-pointer hover:bg-blue-100 transition duration-200 block">
-              Upload Photo
-              <input
-                type="file"
-                name="image"
-                accept="image/*"
-                hidden
-                onChange={handleChange}
-              />
-            </label>
-          </label>
+  <span className="text-sm font-medium text-gray-700 mb-1">
+    Profile Picture <span className="text-red-500">*</span>
+  </span>
 
+  {formData.image ? (
+    <div className="flex items-center gap-4 mt-2">
+      {/* Image preview */}
+      <div className="relative">
+        <img
+          src={URL.createObjectURL(formData.image)}
+          alt="Preview"
+          className="w-16 h-16 rounded-full object-cover border border-gray-300"
+        />
+        {/* Remove/Change Button */}
+        <button
+          type="button"
+          onClick={() => setFormData((prev) => ({ ...prev, image: null }))}
+          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center"
+          title="Remove"
+        >
+          ×
+        </button>
+      </div>
+
+      <label className="cursor-pointer text-blue-600 font-medium hover:underline">
+        Change
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          hidden
+          onChange={handleChange}
+        />
+      </label>
+    </div>
+  ) : (
+    <label className="w-full bg-blue-50 text-blue-600 border border-dashed border-blue-400 px-4 py-2 rounded-md text-center cursor-pointer hover:bg-blue-100 transition duration-200 block mt-2">
+      Upload Photo
+      <input
+        type="file"
+        name="image"
+        accept="image/*"
+        hidden
+        onChange={handleChange}
+      />
+    </label>
+  )}
+</label>
           <input
             type="email"
             name="emailID"

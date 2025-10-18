@@ -93,7 +93,7 @@ function MessageInput() {
       };
 
       // Add the new message to Redux store
-     dispatch(appendMessage(response.data));
+     dispatch(appendMessage(newMessage ));
 
       // Clear form after successful send
       setText("");
