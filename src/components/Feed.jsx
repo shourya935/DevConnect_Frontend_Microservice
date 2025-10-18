@@ -52,7 +52,7 @@ const Feed = () => {
       dispatch(addChatUser(currentUser));
 
       // Show success message
-      alert(`Message sent to ${currentUser.firstName}!`);
+      alert(`Message sent to ${currentUser.firstName}!, Now ${currentUser.firstName} is added in your chats`);
     } catch (err) {
       console.error("Error sending message:", err);
       alert("Failed to send message. Please try again.");

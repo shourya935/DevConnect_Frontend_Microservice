@@ -133,7 +133,7 @@ function UserCard({ user, onMessageSent, onSkip, onSendRequest }) {
               onClick={onSendRequest}
               className="flex-1 py-2.5 font-semibold bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg hover:from-pink-600 hover:to-rose-600 active:scale-95 transition-all duration-150 shadow-lg"
             >
-              Send Request
+              Connect
             </button>
           </div>
         </div>

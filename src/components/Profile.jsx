@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import EditProfile from "./EditProfile";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UserCardWithoutSendButton } from "./UserCard";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +8,6 @@ import { LogOut, Users } from "lucide-react";
 
 function Profile() {
   const user = useSelector((store) => store.user);
-  const [showEditForm, setShowEditForm] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,8 +18,6 @@ function Profile() {
       </div>
     );
   }
-
-  const handleToggleEditProfile = () => setShowEditForm((prev) => !prev);
 
   const handleLogout = async () => {
     try {
@@ -38,7 +34,6 @@ function Profile() {
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-8 bg-gray-50">
       <div className="w-full max-w-5xl flex flex-col gap-6">
-        
         {/* User Profile Card */}
         <div className="relative w-full">
           {/* My Connections Button */}
@@ -51,16 +46,20 @@ function Profile() {
           </button>
 
           {/* Profile Card */}
-          <UserCardWithoutSendButton user={user} />
+          <div className="relative w-full flex justify-center">
+            <div className="w-full max-w-md">
+              <UserCardWithoutSendButton user={user} />
+            </div>
+          </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
           <button
-            onClick={handleToggleEditProfile}
+            onClick={() => navigate("/editprofile")}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
           >
-            {showEditForm ? "Close Edit Profile(Scroll Down)" : "Edit Profile"}
+            Edit Profile
           </button>
           <button
             onClick={() => navigate("/upgradepassword")}
@@ -76,13 +75,6 @@ function Profile() {
             <span>Logout</span>
           </button>
         </div>
-
-        {/* Edit Profile Form */}
-        {showEditForm && (
-          <div className="w-full mt-4">
-            <EditProfile user={user} />
-          </div>
-        )}
       </div>
     </div>
   );

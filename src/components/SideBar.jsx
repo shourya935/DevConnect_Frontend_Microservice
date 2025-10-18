@@ -43,10 +43,10 @@ function SideBar() {
           className="w-24 mb-4 opacity-50"
         />
         <p className="text-lg font-semibold mb-1">
-          You have No connections to chat
+         No Previous chats
         </p>
         <p className="text-sm">
-          Explore the feed page and connect with like-minded people.
+          Explore and Send Message to users From Home page 
         </p>
       </div>
     );

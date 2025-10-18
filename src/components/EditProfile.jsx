@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 const BASE_URL = import.meta.env.VITE_BASE_URL
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../ustils/axiosInstance";
 import { addUser } from "../ustils/userSlice";
+import { useNavigate } from "react-router-dom";
 
-function EditProfile({ user }) {
+function EditProfile() {
+  const user = useSelector((store) => store.user)
   const [formData, setFormData] = useState({
     firstName: user?.firstName || "",
     age: user?.age || "",
@@ -17,6 +19,7 @@ function EditProfile({ user }) {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -45,6 +48,7 @@ function EditProfile({ user }) {
       setError(err.response?.data?.message || "Something went wrong!");
     } finally {
       setLoading(false);
+      navigate("/profile")
     }
   };
 
@@ -107,7 +111,7 @@ function EditProfile({ user }) {
           onChange={handleChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
           rows="3"
-          required
+         
         ></textarea>
 
         {/* Skills */}
@@ -136,7 +140,7 @@ function EditProfile({ user }) {
               value={skillsInput}
               onChange={(e) => setSkillsInput(e.target.value)}
               onKeyDown={handleSkillKeyDown}
-              placeholder="Type skill and press Add (e.g., Data Analytics)"
+              placeholder="Type skill and press Add"
               className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <button

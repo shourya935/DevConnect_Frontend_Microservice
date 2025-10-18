@@ -7,17 +7,20 @@ import { useNavigate } from "react-router-dom";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 import PopupModal from "./PopupModel";
 import { connectSocket } from "../ustils/socketSlice";
+import HomePageSkeleton from "./HomePageSkeleton";
 
 
 function Login() {
   const [emailID, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const [popup, setPopup] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
      try {
+      setIsLoading(true)
       const res = await axiosInstance.post("/login", { emailID, password }); 
       
       // NEW: Store token in localStorage
@@ -63,8 +66,18 @@ function Login() {
       } else {
         alert(message);
       }
+    }finally{
+      setIsLoading(false)
     }
   };
+
+  if(isLoading){
+    return(
+      <>
+      <HomePageSkeleton/>
+      </>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">

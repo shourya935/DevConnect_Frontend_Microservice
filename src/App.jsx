@@ -17,6 +17,7 @@ import ChatContainer from "./components/ChatContainer";
 
 import { connectSocket, disconnectSocket } from "./ustils/socketSlice";
 import { addUser, removeUser } from "./ustils/userSlice";
+import EditProfile from "./components/EditProfile";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -60,6 +61,7 @@ function AppContent() {
           <Route path="login" element={<Login />} />
           <Route path="profile" element={<Profile />} />
           <Route path="upgradepassword" element={<EditPassword />} />
+          <Route path="editprofile" element={<EditProfile/>} />
           <Route path="signup" element={<Signup />} />
           <Route path="connections" element={<Connections />} />
           <Route path="requests" element={<Requests />} />

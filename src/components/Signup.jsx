@@ -8,6 +8,7 @@ import DevConnectLogo from "../assets/DevConnectLogo.png";
 import { useDispatch } from "react-redux";
 import { addUser } from "../ustils/userSlice";
 import { connectSocket } from "../ustils/socketSlice";
+import  { HomePageSkeletonSignup } from "./HomePageSkeleton";
 
 
 const Signup = () => {
@@ -104,6 +105,15 @@ const Signup = () => {
     }));
   };
 
+  if(loading){
+    return(
+      <>
+      <HomePageSkeletonSignup/>
+      </>
+    )
+  }
+
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left Side Image (for Desktop) */}
@@ -188,7 +198,7 @@ const Signup = () => {
                 value={skillsInput}
                 onChange={(e) => setSkillsInput(e.target.value)}
                 onKeyDown={handleSkillKeyDown}
-                placeholder="Type skill and press Add(e.g., Data Analytics)"
+                placeholder="Type skill and press Add"
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
               <button

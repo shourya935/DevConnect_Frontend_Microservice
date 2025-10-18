@@ -66,7 +66,7 @@ function Connections() {
         />
         <p className="text-lg font-semibold mb-1">No connections yet</p>
         <p className="text-sm">
-          Explore the feed page and connect with like-minded people.
+          Explore the Home Page and connect with interested people.
         </p>
       </div>
     );
